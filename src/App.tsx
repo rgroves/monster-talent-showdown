@@ -18,9 +18,9 @@ export default function App() {
       </header>
       <Authenticated>
         <main>
-          {games?.map(({ _id, gameId, state }) => (
+          {games?.map(({ _id, joinCode, status }) => (
             <div key={_id}>
-              {gameId} - [{state}]
+              {joinCode} - [{status}]
             </div>
           ))}
         </main>
