@@ -30,6 +30,13 @@ export const create = mutation({
 export const get = query({
   args: {},
   handler: async (ctx) => {
-    return await ctx.db.query("games").collect();
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new Error("Failed to create game: Unauthenticated");
+    }
+    return await ctx.db
+      .query("games")
+      .withIndex("byOwner", (q) => q.eq("ownerUserId", identity.subject))
+      .collect();
   },
 });
