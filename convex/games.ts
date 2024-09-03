@@ -31,12 +31,22 @@ export const get = query({
   args: {},
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
+
     if (identity === null) {
-      throw new Error("Failed to create game: Unauthenticated");
+      console.warn("No games were retrieved: Unauthenticated");
+      return [];
     }
-    return await ctx.db
+
+    const ownedGames = await ctx.db
       .query("games")
       .withIndex("byOwner", (q) => q.eq("ownerUserId", identity.subject))
       .collect();
+
+    const opponentGames = await ctx.db
+      .query("games")
+      .withIndex("byOpponent", (q) => q.eq("opponentUserId", identity.subject))
+      .collect();
+
+    return [...ownedGames, ...opponentGames];
   },
 });
