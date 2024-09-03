@@ -1,3 +1,4 @@
+import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
 enum GameState {
@@ -48,5 +49,31 @@ export const get = query({
       .collect();
 
     return [...ownedGames, ...opponentGames];
+  },
+});
+
+export const join = mutation({
+  args: { joinCode: v.string() },
+  handler: async (ctx, { joinCode }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new Error("Failed to create game: Unauthenticated");
+    }
+
+    const game = await ctx.db
+      .query("games")
+      .withIndex("byJoinCode", (q) => q.eq("joinCode", joinCode))
+      .filter((q) => q.eq(q.field("opponentUserId"), null))
+      .unique();
+
+    if (!game) {
+      console.error("Invalid join code");
+      return;
+    }
+
+    ctx.db.patch(game._id, {
+      opponentUserId: identity.subject,
+      status: GameState.INPROGRESS,
+    });
   },
 });
