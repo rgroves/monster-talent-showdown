@@ -1,6 +1,7 @@
 import { SignInButton, UserButton } from "@clerk/clerk-react";
 import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
+import CreateGameControl from "./components/CreateGameControl";
 import "./App.css";
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
       </header>
       <Authenticated>
         <main>
+          <CreateGameControl />
           {games?.map(({ _id, joinCode, status }) => (
             <div key={_id}>
               {joinCode} - [{status}]
