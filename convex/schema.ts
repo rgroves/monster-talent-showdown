@@ -10,5 +10,5 @@ export default defineSchema({
   })
     .index("byJoinCode", ["joinCode"])
     .index("byOwner", ["ownerUserId"])
-    .index("byOponent", ["opponentUserId"]),
+    .index("byOpponent", ["opponentUserId"]),
 });
