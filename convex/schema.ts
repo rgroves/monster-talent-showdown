@@ -7,5 +7,8 @@ export default defineSchema({
     opponentUserId: v.optional(v.string()),
     joinCode: v.string(),
     status: v.string(),
-  }).index("byJoinCode", ["joinCode"]),
+  })
+    .index("byJoinCode", ["joinCode"])
+    .index("byOwner", ["ownerUserId"])
+    .index("byOponent", ["opponentUserId"]),
 });
