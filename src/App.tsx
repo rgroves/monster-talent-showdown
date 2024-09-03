@@ -1,10 +1,5 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
-import { useQuery } from "convex/react";
+import { SignInButton, UserButton } from "@clerk/clerk-react";
+import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import "./App.css";
 
@@ -14,20 +9,22 @@ export default function App() {
   return (
     <>
       <header>
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
-        <SignedIn>
+        <Unauthenticated>
+          <SignInButton mode="modal" />
+        </Unauthenticated>
+        <Authenticated>
           <UserButton />
-        </SignedIn>
+        </Authenticated>
       </header>
-      <main>
-        {games?.map(({ _id, gameId, state }) => (
-          <div key={_id}>
-            {gameId} - [{state}]
-          </div>
-        ))}
-      </main>
+      <Authenticated>
+        <main>
+          {games?.map(({ _id, gameId, state }) => (
+            <div key={_id}>
+              {gameId} - [{state}]
+            </div>
+          ))}
+        </main>
+      </Authenticated>
     </>
   );
 }
