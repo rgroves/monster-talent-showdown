@@ -6,10 +6,17 @@ import { api } from "../convex/_generated/api";
 import CreateGameControl from "./components/CreateGameControl";
 import JoinGameControl from "./components/JoinGameControl";
 import "./App.css";
+import GameBoard from "./components/game-board/GameBoard";
 
 export default function App() {
   const games = useQuery(api.games.get);
-  const [currentGameId, setCurrentGameId] = useState<Id<"games">>();
+  const [currentGameId, setCurrentGameId] = useState<Id<"games"> | null>(null);
+
+  const exitGameHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setCurrentGameId(null);
+  };
 
   return (
     <>
@@ -43,8 +50,8 @@ export default function App() {
               )}
             </div>
           ))}
-          {currentGameId && <div>Game State TBD</div>}
         </main>
+        <GameBoard gameId={currentGameId} onExit={exitGameHandler} />
       </Authenticated>
     </>
   );
