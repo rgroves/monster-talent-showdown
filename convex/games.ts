@@ -104,7 +104,7 @@ export const join = mutation({
       currentContract,
     };
 
-    const gameStateId = await ctx.db.insert("gameState", state);
+    await ctx.db.insert("gameState", state);
 
     await ctx.db.patch(game._id, {
       opponentUserId: identity.subject,
