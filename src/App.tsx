@@ -1,6 +1,6 @@
 import { SignInButton, UserButton } from "@clerk/clerk-react";
 import { api } from "../convex/_generated/api";
-import { Id } from "../convex/_generated/dataModel";
+import { Doc, Id } from "../convex/_generated/dataModel";
 import {
   Authenticated,
   Unauthenticated,
@@ -10,11 +10,12 @@ import {
 import { useState } from "react";
 import CreateGameControl from "./components/CreateGameControl";
 import GameBoard from "./components/game-board/GameBoard";
+import GameList from "./components/GameList";
 import JoinGameControl from "./components/JoinGameControl";
 import "./App.css";
 
 type GameData = {
-  currentJoinCode: string | null;
+  currentJoinCode: Doc<"games">["joinCode"] | null;
   currentGameId: Id<"games"> | null;
 };
 
@@ -43,6 +44,10 @@ export default function App() {
     setGameData((prev) => ({ ...prev, currentGameId: gameId }));
   };
 
+  const activateGameHandler = (gameId: Id<"games">) => {
+    setGameData((prev) => ({ ...prev, currentGameId: gameId }));
+  };
+
   return (
     <>
       <header>
@@ -66,32 +71,13 @@ export default function App() {
             <></>
           )}
 
-          {games?.map(({ _id, joinCode, status }) => (
-            <div key={_id}>
-              {status === "INPROGRESS" ? (
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setGameData((prev) => ({ ...prev, currentGameId: _id }));
-                  }}
-                >
-                  {joinCode} - [{status}]
-                </a>
-              ) : (
-                `${joinCode} - [${status}]`
-              )}
-              {joinCode === gameData.currentJoinCode ? (
-                <span>
-                  {" "}
-                  <sup>(New!)</sup>
-                </span>
-              ) : (
-                <></>
-              )}
-            </div>
-          ))}
+          {games && (
+            <GameList
+              games={games}
+              newJoinCode={gameData.currentJoinCode}
+              onActivateGame={activateGameHandler}
+            />
+          )}
         </main>
         <GameBoard gameId={gameData.currentGameId} onExit={exitGameHandler} />
       </Authenticated>
