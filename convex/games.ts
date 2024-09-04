@@ -1,5 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { createShuffledContractDeck } from "./game_logic/contract";
+import { createShuffledMonsterDeck } from "./game_logic/monster";
 
 enum GameState {
   JOINING = "JOINING",
@@ -13,18 +15,21 @@ export const create = mutation({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
-      throw new Error("Failed to create game: Unauthenticated");
+      console.error("Failed to create game: Unauthenticated");
+      return null;
     }
 
     const joinCode = crypto.randomUUID();
 
-    await ctx.db.insert("games", {
+    const game = {
       ownerUserId: identity.subject,
       joinCode,
       status: GameState.JOINING,
-    });
+    };
 
-    return joinCode;
+    const gameId = await ctx.db.insert("games", game);
+
+    return { ...game, _id: gameId };
   },
 });
 
@@ -57,23 +62,54 @@ export const join = mutation({
   handler: async (ctx, { joinCode }) => {
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
-      throw new Error("Failed to create game: Unauthenticated");
+      console.log("Failed to create game: Unauthenticated");
+      return;
     }
 
     const game = await ctx.db
       .query("games")
       .withIndex("byJoinCode", (q) => q.eq("joinCode", joinCode))
-      .filter((q) => q.eq(q.field("opponentUserId"), null))
+      .filter((q) => q.eq(q.field("opponentUserId"), undefined))
       .unique();
 
     if (!game) {
       console.error("Invalid join code");
-      return;
+      return null;
     }
 
-    ctx.db.patch(game._id, {
+    const contractDeck = createShuffledContractDeck();
+    let nextContractCardIdx = 0;
+    const currentContract = contractDeck[nextContractCardIdx++];
+    const monsterDeck = createShuffledMonsterDeck();
+    let nextMonsterCardIdx = 0;
+    const playerOneMonsters = [
+      ...monsterDeck.slice(nextMonsterCardIdx, nextMonsterCardIdx + 5),
+    ];
+    nextMonsterCardIdx += 5;
+    const playerTwoMonsters = [
+      ...monsterDeck.slice(nextMonsterCardIdx, nextMonsterCardIdx + 5),
+    ];
+    nextMonsterCardIdx += 5;
+
+    const state = await ctx.db.insert("gameState", {
+      startTime: new Date().toISOString(),
+      gameId: game._id,
+      playerOneId: game.ownerUserId,
+      playerTwoId: identity.subject,
+      contractDeck: contractDeck,
+      nextContractCardIdx,
+      monsterDeck: monsterDeck,
+      nextMonsterCardIdx,
+      playerOneMonsters,
+      playerTwoMonsters,
+      currentContract,
+    });
+
+    await ctx.db.patch(game._id, {
       opponentUserId: identity.subject,
       status: GameState.INPROGRESS,
     });
+
+    return state;
   },
 });

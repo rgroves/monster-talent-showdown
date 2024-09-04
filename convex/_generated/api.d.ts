@@ -13,6 +13,10 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as gameStates from "../gameStates.js";
+import type * as game_logic_contract from "../game_logic/contract.js";
+import type * as game_logic_monster from "../game_logic/monster.js";
+import type * as game_logic_utility from "../game_logic/utility.js";
 import type * as games from "../games.js";
 
 /**
@@ -24,6 +28,10 @@ import type * as games from "../games.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  gameStates: typeof gameStates;
+  "game_logic/contract": typeof game_logic_contract;
+  "game_logic/monster": typeof game_logic_monster;
+  "game_logic/utility": typeof game_logic_utility;
   games: typeof games;
 }>;
 export declare const api: FilterApi<
