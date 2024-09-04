@@ -4,13 +4,21 @@ import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 
 interface IJoinGameControlProps {
+  shouldRender: boolean;
   onJoin: (gameId: Id<"games">) => void;
 }
 
-export default function JoinGameControl({ onJoin }: IJoinGameControlProps) {
+export default function JoinGameControl({
+  shouldRender,
+  onJoin,
+}: IJoinGameControlProps) {
   const joinGame = useMutation(api.games.join);
   const [joinCode, setJoinCode] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+  if (!shouldRender) {
+    return <></>;
+  }
 
   return (
     <>
