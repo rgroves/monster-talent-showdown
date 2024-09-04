@@ -90,8 +90,7 @@ export const join = mutation({
       ...monsterDeck.slice(nextMonsterCardIdx, nextMonsterCardIdx + 5),
     ];
     nextMonsterCardIdx += 5;
-
-    const state = await ctx.db.insert("gameState", {
+    const state = {
       startTime: new Date().toISOString(),
       gameId: game._id,
       playerOneId: game.ownerUserId,
@@ -103,13 +102,15 @@ export const join = mutation({
       playerOneMonsters,
       playerTwoMonsters,
       currentContract,
-    });
+    };
+
+    const gameStateId = await ctx.db.insert("gameState", state);
 
     await ctx.db.patch(game._id, {
       opponentUserId: identity.subject,
       status: GameState.INPROGRESS,
     });
 
-    return state;
+    return game._id;
   },
 });

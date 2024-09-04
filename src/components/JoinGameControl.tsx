@@ -1,10 +1,16 @@
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 import { useState } from "react";
+import { api } from "../../convex/_generated/api";
+import { Id } from "../../convex/_generated/dataModel";
 
-export default function JoinGameControl() {
+interface IJoinGameControlProps {
+  onJoin: (gameId: Id<"games">) => void;
+}
+
+export default function JoinGameControl({ onJoin }: IJoinGameControlProps) {
   const joinGame = useMutation(api.games.join);
   const [joinCode, setJoinCode] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   return (
     <>
@@ -13,7 +19,14 @@ export default function JoinGameControl() {
           onSubmit={async (e) => {
             e.preventDefault();
             e.stopPropagation();
-            await joinGame({ joinCode });
+            const gameId = await joinGame({ joinCode });
+            if (gameId) {
+              setJoinCode("");
+              setErrorMsg("");
+              onJoin(gameId);
+            } else {
+              setErrorMsg("Invalid Join Code");
+            }
           }}
         >
           <label htmlFor="join-code">Enter Join Code:</label>
@@ -26,6 +39,7 @@ export default function JoinGameControl() {
             value={joinCode}
           />
           <button formAction="submit">Join Game</button>
+          {errorMsg && <div>{errorMsg}</div>}
         </form>
       </div>
     </>

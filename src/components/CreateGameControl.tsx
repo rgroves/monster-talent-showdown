@@ -1,27 +1,33 @@
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { useState } from "react";
+import { Id } from "../../convex/_generated/dataModel";
 
-export default function CreateGameControl() {
+interface ICreateGameControlProps {
+  joinCode: string | null;
+  onCreate: (gameId: Id<"games">, joinCode: string) => void;
+}
+
+export default function CreateGameControl({
+  joinCode,
+  onCreate,
+}: ICreateGameControlProps) {
   const createGame = useMutation(api.games.create);
-  const [joinCode, setJoinCode] = useState("");
 
   if (!joinCode) {
     return (
-      <>
-        <div>
-          <button
-            onClick={async () => {
-              const joinCode = await createGame();
-              setJoinCode(joinCode);
-            }}
-          >
-            Start A New Game
-          </button>
-        </div>
-      </>
+      <button
+        onClick={async () => {
+          const game = await createGame();
+          // TODO handle game creation failure
+          if (game && game._id) {
+            onCreate(game?._id, game.joinCode);
+          }
+        }}
+      >
+        Start A New Game
+      </button>
     );
   } else {
-    return <p>Give this join code to your competitor: {joinCode} </p>;
+    return <p>Give this join code to your competitor: {joinCode}</p>;
   }
 }
