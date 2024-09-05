@@ -102,6 +102,10 @@ export const join = mutation({
       playerOneMonsters,
       playerTwoMonsters,
       currentContract,
+      playerOnePoints: 0,
+      playerTwoPoints: 0,
+      playerOneRoundAck: false,
+      playerTwoRoundAck: false,
     };
 
     await ctx.db.insert("gameState", state);

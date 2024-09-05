@@ -40,5 +40,10 @@ export default defineSchema({
     currentContract: contractCardValidator,
     currentPlayerOneMonster: v.optional(monsterCardValidator),
     currentPlayerTwoMonster: v.optional(monsterCardValidator),
+    winningPlayerId: v.optional(v.string()),
+    playerOnePoints: v.number(),
+    playerTwoPoints: v.number(),
+    playerOneRoundAck: v.boolean(),
+    playerTwoRoundAck: v.boolean(),
   }).index("byGameId", ["gameId"]),
 });
