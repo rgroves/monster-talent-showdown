@@ -45,7 +45,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
       setResultMsg(msg);
     }
     setAcknowledged(false);
-  }, [gameState?.winningPlayerId, gameState?.endTime]);
+  }, [gameState?.winningPlayerId, gameState?.endTime, playerId]);
 
   if (!user || !gameState) {
     return <></>;
