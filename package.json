@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "convex-dev": "npx convex dev --tail-logs",
     "build": "tsc -b && vite build",
     "format": "pnpm exec prettier . --write",
     "lint": "eslint .",
