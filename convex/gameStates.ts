@@ -44,10 +44,10 @@ export const updateMonsterChoice = mutation({
 
     if (update.playerId === gameState.playerOneId) {
       chosenCard = gameState.playerOneMonsters.find(
-        (card) => card.id === update.cardId
+        (card) => card.id === update.cardId,
       );
       const monsters = gameState.playerOneMonsters.filter(
-        (card) => card.id != update.cardId
+        (card) => card.id != update.cardId,
       );
       patchState = {
         playerOneMonsters: monsters,
@@ -58,10 +58,10 @@ export const updateMonsterChoice = mutation({
         gameState.currentPlayerTwoMonster !== undefined;
     } else if (update.playerId === gameState.playerTwoId) {
       chosenCard = gameState.playerTwoMonsters.find(
-        (card) => card.id === update.cardId
+        (card) => card.id === update.cardId,
       );
       const monsters = gameState.playerTwoMonsters.filter(
-        (card) => card.id != update.cardId
+        (card) => card.id != update.cardId,
       );
       patchState = {
         playerTwoMonsters: monsters,
@@ -121,9 +121,9 @@ export const acknowledgeRound = mutation({
       ) {
         // Set up Win state.
         const winningPlayerId =
-          gameState.playerOnePoints === POINTS_TO_WIN_GAME
-            ? gameState.playerOneId
-            : gameState.playerTwoId;
+          gameState.playerOnePoints === POINTS_TO_WIN_GAME ?
+            gameState.playerOneId
+          : gameState.playerTwoId;
 
         await ctx.db.patch(gameState.gameId, { status: "COMPLETED" });
 

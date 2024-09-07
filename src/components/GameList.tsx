@@ -21,7 +21,7 @@ export default function GameList({
     <>
       {games?.map(({ _id, joinCode, status }) => (
         <div key={_id}>
-          {status === "INPROGRESS" ? (
+          {status === "INPROGRESS" ?
             <a
               href="#"
               onClick={(e) => {
@@ -32,17 +32,13 @@ export default function GameList({
             >
               {joinCode} - [{status}]
             </a>
-          ) : (
-            `${joinCode} - [${status}]`
-          )}
-          {joinCode === newJoinCode ? (
+          : `${joinCode} - [${status}]`}
+          {joinCode === newJoinCode ?
             <span>
               {" "}
               <sup>(New!)</sup>
             </span>
-          ) : (
-            <></>
-          )}
+          : <></>}
         </div>
       ))}
     </>

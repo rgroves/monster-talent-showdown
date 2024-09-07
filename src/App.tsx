@@ -24,7 +24,7 @@ export default function App() {
   const { isAuthenticated, isLoading } = useConvexAuth();
   const games = useQuery(
     api.games.get,
-    !isAuthenticated || isLoading ? "skip" : undefined
+    !isAuthenticated || isLoading ? "skip" : undefined,
   );
   const [gameData, setGameData] = useState<GameData>({
     currentGameId: null,
@@ -32,7 +32,7 @@ export default function App() {
   });
   const gameState = useQuery(
     api.gameStates.getByGameId,
-    gameData.currentGameId ? { gameId: gameData.currentGameId } : "skip"
+    gameData.currentGameId ? { gameId: gameData.currentGameId } : "skip",
   );
 
   const exitGameHandler = (event: React.MouseEvent<HTMLButtonElement>) => {

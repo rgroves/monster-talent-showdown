@@ -33,15 +33,15 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
 
     if (!gameState.endTime) {
       const msg =
-        gameState.winningPlayerId === playerId
-          ? "You won the contract!"
-          : "You lost the contract.";
+        gameState.winningPlayerId === playerId ?
+          "You won the contract!"
+        : "You lost the contract.";
       setResultMsg(msg);
     } else {
       const msg =
-        gameState.winningPlayerId === playerId
-          ? "Congratulations! You won the game."
-          : "Sorry, better luck next time. You lost the game.";
+        gameState.winningPlayerId === playerId ?
+          "Congratulations! You won the game."
+        : "Sorry, better luck next time. You lost the game.";
       setResultMsg(msg);
     }
     setAcknowledged(false);
@@ -72,7 +72,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
   const playerCards = gameState[playerMonsters];
 
   const cardChosenHandler: React.MouseEventHandler<HTMLDivElement> = async (
-    event
+    event,
   ) => {
     event.preventDefault();
     event.stopPropagation();
@@ -141,7 +141,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
               border: "1px dashed white",
             }}
           >
-            {gameState.currentPlayerOneMonster ? (
+            {gameState.currentPlayerOneMonster ?
               <div
                 className="game_board__player-cards__card"
                 style={{
@@ -154,9 +154,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
               >
                 {gameState.currentPlayerOneMonster.monsterType}
               </div>
-            ) : (
-              `Choose Your Monster`
-            )}
+            : `Choose Your Monster`}
           </div>
           <div
             style={{
@@ -167,7 +165,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
               border: "1px dashed white",
             }}
           >
-            {gameState.currentPlayerTwoMonster ? (
+            {gameState.currentPlayerTwoMonster ?
               <div
                 className="game_board__player-cards__card"
                 style={{
@@ -180,9 +178,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
               >
                 {gameState.currentPlayerTwoMonster.monsterType}
               </div>
-            ) : (
-              `Waiting For Competitor`
-            )}
+            : `Waiting For Competitor`}
           </div>
         </div>
 
