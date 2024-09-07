@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { Doc } from "../../../convex/_generated/dataModel";
 import { useMutation } from "convex/react";
+import { Button } from "../ui/button";
 
 interface IGameBoardProps {
   gameState: Doc<"gameState"> | null | undefined;
@@ -93,7 +94,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
   if (gameState.endTime) {
     return (
       <div className="game-board">
-        <button
+        <Button
           onClick={(event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -103,7 +104,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
           }}
         >
           Back To Game List
-        </button>
+        </Button>
         <hr />
         <h1>{resultMsg}</h1>
       </div>
@@ -112,7 +113,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
 
   return (
     <div className="game-board">
-      <button
+      <Button
         onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
@@ -122,7 +123,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
         }}
       >
         Back To Game List
-      </button>
+      </Button>
 
       <article className="game_board__contract">
         <h1>{gameState.currentContract.title}</h1>
@@ -185,7 +186,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
         {resultMsg && (
           <>
             <h3>{resultMsg}</h3>
-            <button
+            <Button
               onClick={async () => {
                 setAcknowledged(true);
                 await acknowledgeRound({
@@ -195,7 +196,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
               }}
             >
               {acknowledged ? `Waiting For Competitor` : `Next Round`}
-            </button>
+            </Button>
           </>
         )}
       </article>

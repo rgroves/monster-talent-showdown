@@ -2,6 +2,7 @@ import { useMutation } from "convex/react";
 import { useState } from "react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
+import { Button } from "./ui/button";
 
 interface IJoinGameControlProps {
   shouldRender: boolean;
@@ -46,7 +47,7 @@ export default function JoinGameControl({
             }}
             value={joinCode}
           />
-          <button formAction="submit">Join Game</button>
+          <Button formAction="submit">Join Game</Button>
           {errorMsg && <div>{errorMsg}</div>}
         </form>
       </div>

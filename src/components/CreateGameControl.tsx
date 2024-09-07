@@ -1,6 +1,7 @@
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
+import { Button } from "./ui/button";
 
 interface ICreateGameControlProps {
   joinCode: string | null;
@@ -21,7 +22,7 @@ export default function CreateGameControl({
 
   if (!joinCode) {
     return (
-      <button
+      <Button
         onClick={async () => {
           const game = await createGame();
           // TODO handle game creation failure
@@ -31,7 +32,7 @@ export default function CreateGameControl({
         }}
       >
         Start A New Game
-      </button>
+      </Button>
     );
   }
 }
