@@ -1,19 +1,14 @@
-import { SignInButton, UserButton } from "@clerk/clerk-react";
 import { api } from "../convex/_generated/api";
 import { Doc, Id } from "../convex/_generated/dataModel";
-import {
-  Authenticated,
-  Unauthenticated,
-  useQuery,
-  useConvexAuth,
-} from "convex/react";
+import { Authenticated, useQuery, useConvexAuth } from "convex/react";
 import { useState } from "react";
 import CreateGameControl from "./components/CreateGameControl";
 import GameBoard from "./components/game-board/GameBoard";
 import GameList from "./components/GameList";
+import Header from "./components/Header";
 import JoinGameControl from "./components/JoinGameControl";
-import "./App.css";
 import WaitingForJoinControl from "./components/WaitingForJoinControl";
+import "./App.css";
 
 type GameData = {
   currentJoinCode: Doc<"games">["joinCode"] | null;
@@ -65,14 +60,7 @@ export default function App() {
 
   return (
     <>
-      <header>
-        <Unauthenticated>
-          <SignInButton mode="modal" />
-        </Unauthenticated>
-        <Authenticated>
-          <UserButton />
-        </Authenticated>
-      </header>
+      <Header />
       <Authenticated>
         <main>
           <CreateGameControl
