@@ -23,15 +23,15 @@ const formSchema = z.object({
     .length(36, "Join Code must be 36 characters"),
 });
 
-interface IJoinGameControlProps {
-  shouldRender: boolean;
+interface IJoinGameFormProps {
   onJoin: (gameId: Id<"games">) => void;
+  onFormSubmit: (success: boolean) => void;
 }
 
-export default function JoinGameControl({
-  shouldRender,
+export default function JoinGameForm({
   onJoin,
-}: IJoinGameControlProps) {
+  onFormSubmit,
+}: IJoinGameFormProps) {
   const joinGame = useMutation(api.games.join);
   const [errorMsg, setErrorMsg] = useState("");
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,17 +41,16 @@ export default function JoinGameControl({
     },
   });
 
-  if (!shouldRender) {
-    return <></>;
-  }
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    // TODO joinGame should return {gameId and status} where status is the
+    //      success/error message that can be used in setErrorMsg below
     const gameId = await joinGame(values);
     if (gameId) {
       onJoin(gameId);
     } else {
       setErrorMsg("Invalid Join Code");
     }
+    onFormSubmit(Boolean(gameId));
   }
 
   return (
@@ -62,21 +61,19 @@ export default function JoinGameControl({
           name="joinCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Join A Game</FormLabel>
+              <FormLabel>Join Code</FormLabel>
               <FormControl>
                 <Input
                   placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                Enter a valid join code to join a game.
-              </FormDescription>
+              <FormDescription>Enter a valid join code</FormDescription>
               <FormMessage>{errorMsg}</FormMessage>
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Join</Button>
       </form>
     </Form>
   );

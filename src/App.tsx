@@ -6,7 +6,7 @@ import CreateGameControl from "./components/CreateGameControl";
 import GameBoard from "./components/game-board/GameBoard";
 import GameList from "./components/GameList";
 import Header from "./components/Header";
-import JoinGameControl from "./components/JoinGameControl";
+import JoinGameDialog from "./components/JoinGameDiaglog";
 import WaitingForJoinControl from "./components/WaitingForJoinControl";
 import "./App.css";
 
@@ -52,7 +52,7 @@ export default function App() {
   };
 
   const shouldRenderCreateGameControl = gameData.currentGameId == null;
-  const shouldRenderJoinGameControl =
+  const shouldRenderJoinGameDialog =
     gameData.currentGameId == null && gameData.currentJoinCode == null;
   const shouldRenderGamesList = gameData.currentGameId === null;
   const shouldRenderWaitingForJoinControl =
@@ -74,8 +74,8 @@ export default function App() {
             shouldRender={shouldRenderWaitingForJoinControl}
           />
 
-          <JoinGameControl
-            shouldRender={shouldRenderJoinGameControl}
+          <JoinGameDialog
+            shouldRender={shouldRenderJoinGameDialog}
             onJoin={joinGameHandler}
           />
 
