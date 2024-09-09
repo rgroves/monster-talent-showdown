@@ -67,11 +67,12 @@ export default function App() {
       <Header />
       <Authenticated>
         <main>
-          <CreateGameControl
-            joinCode={gameData.currentJoinCode}
-            shouldRender={shouldRenderCreateGameControl}
-            onCreate={createGameHandler}
-          />
+          {shouldRenderCreateGameControl && (
+            <CreateGameControl
+              joinCode={gameData.currentJoinCode}
+              onCreate={createGameHandler}
+            />
+          )}
 
           {shouldRenderWaitingForJoinControl && gameData.currentJoinCode && (
             <WaitingForJoinControl
@@ -80,17 +81,17 @@ export default function App() {
             />
           )}
 
-          <JoinGameDialog
-            shouldRender={shouldRenderJoinGameDialog}
-            onJoin={joinGameHandler}
-          />
+          {shouldRenderJoinGameDialog && (
+            <JoinGameDialog onJoin={joinGameHandler} />
+          )}
 
-          <GameList
-            games={games}
-            newJoinCode={gameData.currentJoinCode}
-            shouldRender={shouldRenderGamesList}
-            onActivateGame={activateGameHandler}
-          />
+          {shouldRenderGamesList && (
+            <GameList
+              games={games}
+              newJoinCode={gameData.currentJoinCode}
+              onActivateGame={activateGameHandler}
+            />
+          )}
 
           <GameBoard gameState={gameState} onExit={exitGameHandler} />
         </main>

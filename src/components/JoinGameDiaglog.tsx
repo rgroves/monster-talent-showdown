@@ -12,19 +12,11 @@ import {
 } from "@/components/ui/dialog";
 
 interface IJoinGameDialogProps {
-  shouldRender: boolean;
   onJoin: (gameId: Id<"games">) => void;
 }
-export default function JoinGameDialog({
-  shouldRender,
-  onJoin,
-}: IJoinGameDialogProps) {
+export default function JoinGameDialog({ onJoin }: IJoinGameDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const title = "Join Game";
-
-  if (!shouldRender) {
-    return <></>;
-  }
 
   const formSubmitHandler = (isValidSubmission: boolean) => {
     setIsOpen(!isValidSubmission);
