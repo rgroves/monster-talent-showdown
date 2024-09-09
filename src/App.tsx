@@ -51,6 +51,10 @@ export default function App() {
     setGameData((prev) => ({ ...prev, currentGameId: gameId }));
   };
 
+  const stopWaitingHandler = () => {
+    setGameData({ currentGameId: null, currentJoinCode: null });
+  };
+
   const shouldRenderCreateGameControl = gameData.currentGameId == null;
   const shouldRenderJoinGameDialog =
     gameData.currentGameId == null && gameData.currentJoinCode == null;
@@ -69,10 +73,12 @@ export default function App() {
             onCreate={createGameHandler}
           />
 
-          <WaitingForJoinControl
-            joinCode={gameData.currentJoinCode}
-            shouldRender={shouldRenderWaitingForJoinControl}
-          />
+          {shouldRenderWaitingForJoinControl && gameData.currentJoinCode && (
+            <WaitingForJoinControl
+              joinCode={gameData.currentJoinCode}
+              onStopWaiting={stopWaitingHandler}
+            />
+          )}
 
           <JoinGameDialog
             shouldRender={shouldRenderJoinGameDialog}
