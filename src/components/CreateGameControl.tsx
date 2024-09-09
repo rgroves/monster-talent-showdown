@@ -31,7 +31,7 @@ export default function CreateGameControl({
           }
         }}
       >
-        Start A New Game
+        New Game
       </Button>
     );
   }
