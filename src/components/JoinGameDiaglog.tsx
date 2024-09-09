@@ -20,7 +20,7 @@ export default function JoinGameDialog({
   onJoin,
 }: IJoinGameDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const title = "Join A Game";
+  const title = "Join Game";
 
   if (!shouldRender) {
     return <></>;
