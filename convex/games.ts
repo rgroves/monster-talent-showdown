@@ -2,6 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { createShuffledContractDeck } from "./game_logic/contract";
 import { createShuffledMonsterDeck } from "./game_logic/monster";
+import { Doc } from "./_generated/dataModel";
 
 enum GameState {
   JOINING = "JOINING",
@@ -12,7 +13,7 @@ enum GameState {
 
 export const create = mutation({
   args: {},
-  handler: async (ctx) => {
+  handler: async (ctx): Promise<Doc<"games"> | null> => {
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
       console.error("Failed to create game: Unauthenticated");
@@ -21,15 +22,16 @@ export const create = mutation({
 
     const joinCode = crypto.randomUUID();
 
-    const game = {
+    const gameData = {
       ownerUserId: identity.subject,
       joinCode,
       status: GameState.JOINING,
     };
 
-    const gameId = await ctx.db.insert("games", game);
+    const gameId = await ctx.db.insert("games", gameData);
+    const game = ctx.db.get(gameId);
 
-    return { ...game, _id: gameId };
+    return game;
   },
 });
 
