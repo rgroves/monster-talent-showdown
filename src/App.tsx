@@ -1,6 +1,11 @@
 import { api } from "../convex/_generated/api";
 import { Doc, Id } from "../convex/_generated/dataModel";
-import { Authenticated, useQuery, useConvexAuth } from "convex/react";
+import {
+  Authenticated,
+  useQuery,
+  useConvexAuth,
+  Unauthenticated,
+} from "convex/react";
 import { useState } from "react";
 import CreateGameControl from "./components/CreateGameControl";
 import GameBoard from "./components/game-board/GameBoard";
@@ -92,6 +97,22 @@ export default function App() {
           <GameBoard gameState={gameState} onExit={exitGameHandler} />
         </main>
       </Authenticated>
+      <Unauthenticated>
+        <div className="item-center flex flex-wrap justify-center direction-alternate">
+          <p className="mx-auto my-4 max-w-prose text-pretty text-left">
+            <em>Monster Talent Showdown</em> is a two-player card battle game
+            where the world has been forever changed—monsters have arrived, and
+            they’re real! These fantastical creatures are eager to break into
+            the world of entertainment, and it’s your job as a top agent at the
+            Monster Talent Agency to help them achieve stardom.
+          </p>
+          <img
+            src="./mts-splash-600w.png"
+            className="h-auto max-w-full"
+            alt="Image of various monsters in a playful talent battle, dressed up as dancers, singers, actors, and comedians"
+          />
+        </div>
+      </Unauthenticated>
     </>
   );
 }
