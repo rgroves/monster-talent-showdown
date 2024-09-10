@@ -19,10 +19,19 @@ export default function ContractCard({
   playerOneMonster,
   playerTwoMonster,
 }: IContractCardProps) {
-  const player1ChooseMsg =
+  const playerOneChooseMsg =
     playerNbr === 1 ? "Choose Your Monster" : "Waiting for Player 1";
-  const player2ChooseMsg =
+  const playerTwoChooseMsg =
     playerNbr === 2 ? "Choose Your Monster" : "Waiting for Player 2";
+
+  const playerOneCardBackground =
+    playerOneMonster ?
+      "bg-gradient-to-b from-purple-50 to-purple-300"
+    : "bg-white";
+  const playerTwoCardBackground =
+    playerTwoMonster ?
+      "bg-gradient-to-b from-purple-50 to-purple-300"
+    : "bg-white";
 
   return (
     <Card className="mx-auto bg-gradient-to-b from-indigo-50 to-indigo-200 md:max-w-prose">
@@ -34,11 +43,19 @@ export default function ContractCard({
       <CardContent className="text-balanced text-left">
         <div>{contract.description}</div>
         <div className="my-4 grid grid-cols-1 justify-items-center md:grid-cols-2">
-          <div className="my-2 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-dashed border-black bg-white p-2 text-center">
-            {playerOneMonster ? playerOneMonster.monsterType : player1ChooseMsg}
+          <div
+            className={`${playerOneCardBackground} my-2 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-dashed border-black p-2 text-center`}
+          >
+            {playerOneMonster ?
+              playerOneMonster.monsterType
+            : playerOneChooseMsg}
           </div>
-          <div className="my-2 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-dashed border-black bg-white p-2 text-center">
-            {playerTwoMonster ? playerTwoMonster.monsterType : player2ChooseMsg}
+          <div
+            className={`${playerTwoCardBackground} my-2 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-dashed border-black p-2 text-center`}
+          >
+            {playerTwoMonster ?
+              playerTwoMonster.monsterType
+            : playerTwoChooseMsg}
           </div>
         </div>
       </CardContent>

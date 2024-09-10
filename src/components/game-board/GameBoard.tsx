@@ -157,26 +157,18 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
           </>
         )}
       </div>
-      <div className="game_board__player-hand">
-        <h1>Your Monsters</h1>
 
-        <div
-          className="game_board__player-cards"
-          style={{ display: "flex", gap: "1rem", justifyContent: "center" }}
-        >
+      <hr className="m-10" />
+      <div>
+        <h1>Your Monster Talent Pool</h1>
+
+        <div className="flex flex-wrap content-center justify-center gap-1">
           {playerCards &&
             playerCards.map((card) => (
               <div
                 key={card.id}
                 onClick={cardChosenHandler}
-                className="game_board__player-cards__card"
-                style={{
-                  maxHeight: "150px",
-                  minHeight: "150px",
-                  maxWidth: "150px",
-                  minWidth: "150px",
-                  border: "1px solid white",
-                }}
+                className="my-2 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-solid border-black bg-gradient-to-b from-purple-50 to-purple-300 p-2 text-center"
                 data-card-id={card.id}
               >
                 {card.monsterType}
