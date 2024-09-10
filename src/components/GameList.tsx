@@ -37,21 +37,35 @@ export default function GameList({ games, onActivateGame }: IGameListProps) {
       <h2 className="m-2 my-8 text-balance text-sm font-extrabold md:text-lg lg:text-2xl">
         Games In Progress
       </h2>
-      {inProgressGames?.map((game) => (
-        <GameCard key={game._id} game={game} onActivateGame={onActivateGame} />
-      ))}
+      {inProgressGames.length > 0 ?
+        inProgressGames.map((game) => (
+          <GameCard
+            key={game._id}
+            game={game}
+            onActivateGame={onActivateGame}
+          />
+        ))
+      : <p>
+          You have no games in progress. You can start or join a game using the
+          buttons above.
+        </p>
+      }
 
       <hr className="my-8" />
       <h2 className="m-2 my-8 text-balance text-sm font-extrabold md:text-lg lg:text-2xl">
         Games Waiting For A Competitor
       </h2>
-      {joiningGames?.map((game) => <GameCard key={game._id} game={game} />)}
+      {joiningGames.length > 0 ?
+        joiningGames.map((game) => <GameCard key={game._id} game={game} />)
+      : <p>You have no games waiting for a competitor to join.</p>}
 
       <hr className="my-8" />
       <h2 className="m-2 my-8 text-balance text-sm font-extrabold md:text-lg lg:text-2xl">
         Completed Games
       </h2>
-      {completedGames?.map((game) => <GameCard key={game._id} game={game} />)}
+      {completedGames.length > 0 ?
+        completedGames.map((game) => <GameCard key={game._id} game={game} />)
+      : <p>You have no completed games.</p>}
     </>
   );
 }
