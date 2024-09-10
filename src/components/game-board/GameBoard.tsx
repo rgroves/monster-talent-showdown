@@ -4,6 +4,7 @@ import { api } from "../../../convex/_generated/api";
 import { Doc } from "../../../convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { Button } from "../ui/button";
+import ContractCard from "./ContractCard";
 
 interface IGameBoardProps {
   gameState: Doc<"gameState"> | null | undefined;
@@ -52,15 +53,18 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
     return <></>;
   }
 
+  let playerNbr: 1 | 2;
   let playerMonsters: "playerOneMonsters" | "playerTwoMonsters";
   let chosenMonster, score, opponentScore;
 
   if (user.id === gameState.playerOneId) {
+    playerNbr = 1;
     playerMonsters = "playerOneMonsters";
     chosenMonster = gameState.currentPlayerOneMonster;
     score = gameState.playerOnePoints;
     opponentScore = gameState.playerTwoPoints;
   } else if (user.id === gameState.playerTwoId) {
+    playerNbr = 2;
     playerMonsters = "playerTwoMonsters";
     chosenMonster = gameState.currentPlayerTwoMonster;
     score = gameState.playerTwoPoints;
@@ -125,68 +129,21 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
         Back To Game List
       </Button>
 
-      <article className="game_board__contract">
-        <h1>{gameState.currentContract.title}</h1>
-        <h2>{gameState.currentContract.type}</h2>
-        <p>{gameState.currentContract.description}</p>
-        <div
-          className="game_board__contract__monster-selections"
-          style={{ display: "flex", gap: "1rem", justifyContent: "center" }}
-        >
-          <div
-            style={{
-              maxHeight: "150px",
-              minHeight: "150px",
-              maxWidth: "150px",
-              minWidth: "150px",
-              border: "1px dashed white",
-            }}
-          >
-            {gameState.currentPlayerOneMonster ?
-              <div
-                className="game_board__player-cards__card"
-                style={{
-                  maxHeight: "150px",
-                  minHeight: "150px",
-                  maxWidth: "150px",
-                  minWidth: "150px",
-                  border: "1px solid white",
-                }}
-              >
-                {gameState.currentPlayerOneMonster.monsterType}
-              </div>
-            : `Choose Your Monster`}
-          </div>
-          <div
-            style={{
-              maxHeight: "150px",
-              minHeight: "150px",
-              maxWidth: "150px",
-              minWidth: "150px",
-              border: "1px dashed white",
-            }}
-          >
-            {gameState.currentPlayerTwoMonster ?
-              <div
-                className="game_board__player-cards__card"
-                style={{
-                  maxHeight: "150px",
-                  minHeight: "150px",
-                  maxWidth: "150px",
-                  minWidth: "150px",
-                  border: "1px solid white",
-                }}
-              >
-                {gameState.currentPlayerTwoMonster.monsterType}
-              </div>
-            : `Waiting For Competitor`}
-          </div>
-        </div>
+      <hr className="m-10" />
+      <ContractCard
+        contract={gameState.currentContract}
+        playerNbr={playerNbr}
+        playerOneMonster={gameState.currentPlayerOneMonster}
+        playerTwoMonster={gameState.currentPlayerTwoMonster}
+      />
 
+      <hr className="m-10" />
+      <div>
         {resultMsg && (
           <>
             <h3>{resultMsg}</h3>
             <Button
+              disabled={acknowledged}
               onClick={async () => {
                 setAcknowledged(true);
                 await acknowledgeRound({
@@ -199,7 +156,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
             </Button>
           </>
         )}
-      </article>
+      </div>
       <div className="game_board__player-hand">
         <h1>Your Monsters</h1>
 
