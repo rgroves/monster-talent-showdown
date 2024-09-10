@@ -86,11 +86,7 @@ export default function App() {
           )}
 
           {shouldRenderGamesList && (
-            <GameList
-              games={games}
-              newJoinCode={gameData.currentJoinCode}
-              onActivateGame={activateGameHandler}
-            />
+            <GameList games={games} onActivateGame={activateGameHandler} />
           )}
 
           <GameBoard gameState={gameState} onExit={exitGameHandler} />
