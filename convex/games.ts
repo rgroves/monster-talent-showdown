@@ -75,8 +75,14 @@ export const join = mutation({
       .unique();
 
     if (!game) {
-      console.error("Invalid join code");
-      return null;
+      return { gameId: null, status: "The join code provided is not valid" };
+    }
+
+    if (game.ownerUserId === identity.subject) {
+      return {
+        gameId: null,
+        status: "You cannot join a game that you created",
+      };
     }
 
     const contractDeck = createShuffledContractDeck();
@@ -117,6 +123,6 @@ export const join = mutation({
       status: GameState.INPROGRESS,
     });
 
-    return game._id;
+    return { gameId: game._id, status: "Successfully joined the game" };
   },
 });

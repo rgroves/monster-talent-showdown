@@ -25,7 +25,7 @@ const formSchema = z.object({
 
 interface IJoinGameFormProps {
   onJoin: (gameId: Id<"games">) => void;
-  onFormSubmit: (success: boolean) => void;
+  onFormSubmit: (isValidSubmission: boolean) => void;
 }
 
 export default function JoinGameForm({
@@ -42,15 +42,14 @@ export default function JoinGameForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO joinGame should return {gameId and status} where status is the
-    //      success/error message that can be used in setErrorMsg below
-    const gameId = await joinGame(values);
-    if (gameId) {
-      onJoin(gameId);
+    const joinData = await joinGame(values);
+    if (joinData?.gameId) {
+      onJoin(joinData.gameId);
+      onFormSubmit(true);
     } else {
-      setErrorMsg("Invalid Join Code");
+      setErrorMsg(joinData?.status ?? "Failed to join");
+      onFormSubmit(false);
     }
-    onFormSubmit(Boolean(gameId));
   }
 
   return (
