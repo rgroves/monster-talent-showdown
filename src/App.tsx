@@ -107,6 +107,7 @@ export default function App() {
             Monster Talent Agency to help them achieve stardom.
           </p>
           <img
+            fetchPriority="high"
             src="./mts-splash-600w.png"
             className="h-auto max-w-full"
             alt="Image of various monsters in a playful talent battle, dressed up as dancers, singers, actors, and comedians"
