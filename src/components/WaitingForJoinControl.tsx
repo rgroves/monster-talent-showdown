@@ -43,10 +43,10 @@ export default function WaitingForJoinControl({
       <DialogTrigger asChild>
         <Button className="m-4">Back to Games List</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="mx-auto my-8 max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-center">{title}</DialogTitle>
+          <DialogDescription className="py-8">
             Copy the join code displayed below and send it to your competitor
             along with a link to this site. Your competitor will have to sign-up
             and/or sign-in and then join the game using this code.
@@ -76,7 +76,7 @@ export default function WaitingForJoinControl({
             : <ClipboardCopyIcon className="h-4 w-4" />}
           </Button>
         </div>
-        <p>Waiting for competitor...</p>
+        <p className="py-8">Waiting for competitor...</p>
       </DialogContent>
     </Dialog>
   );
