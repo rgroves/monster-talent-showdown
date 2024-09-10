@@ -109,6 +109,8 @@ export default function App() {
           <img
             fetchPriority="high"
             src="./mts-splash-600w.webp"
+            width="600"
+            height="343"
             className="h-auto max-w-full"
             alt="Image of various monsters in a playful talent battle, dressed up as dancers, singers, actors, and comedians"
           />
