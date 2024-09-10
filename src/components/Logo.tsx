@@ -1,5 +1,5 @@
 export default function Logo() {
-  const blackAlphaLogoPath = "./logo-black-alpha-400.png";
+  const blackAlphaLogoPath = "./logo-black-alpha-250.webp";
 
   return (
     <img
