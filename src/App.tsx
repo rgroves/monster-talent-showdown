@@ -48,10 +48,6 @@ export default function App() {
     });
   };
 
-  const joinGameHandler = (gameId: Id<"games">) => {
-    setGameData({ currentGameId: gameId, currentJoinCode: null });
-  };
-
   const activateGameHandler = (gameId: Id<"games">) => {
     setGameData((prev) => ({ ...prev, currentGameId: gameId }));
   };
@@ -60,12 +56,15 @@ export default function App() {
     setGameData({ currentGameId: null, currentJoinCode: null });
   };
 
+  const currentGame = games?.filter(
+    (game) => game.joinCode === gameData.currentJoinCode,
+  )[0];
+
   const shouldRenderCreateGameControl = gameData.currentGameId == null;
   const shouldRenderJoinGameDialog =
     gameData.currentGameId == null && gameData.currentJoinCode == null;
   const shouldRenderGamesList = gameData.currentGameId === null;
-  const shouldRenderWaitingForJoinControl =
-    (gameState?.playerTwoId ?? "") === "" && gameData.currentJoinCode !== null;
+  const shouldRenderWaitingForJoinControl = currentGame?.status === "JOINING";
 
   return (
     <>
@@ -87,7 +86,7 @@ export default function App() {
           )}
 
           {shouldRenderJoinGameDialog && (
-            <JoinGameDialog onJoin={joinGameHandler} />
+            <JoinGameDialog onJoin={activateGameHandler} />
           )}
 
           {shouldRenderGamesList && (
