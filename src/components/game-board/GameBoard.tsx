@@ -5,6 +5,7 @@ import { Doc } from "../../../convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { Button } from "../ui/button";
 import ContractCard from "./ContractCard";
+import PlayerHand from "./PlayerHand";
 
 interface IGameBoardProps {
   gameState: Doc<"gameState"> | null | undefined;
@@ -34,16 +35,18 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
     }
 
     if (!gameState.endTime) {
+      // There is a winner and this is the end of the round.
       const msg =
         gameState.winningPlayerId === playerId ?
           "You won the contract!"
         : "You lost the contract.";
       setResultMsg(msg);
     } else {
+      // There is a winner and this is the end of the game.
       const msg =
         gameState.winningPlayerId === playerId ?
-          "Congratulations! You won the game."
-        : "Sorry, better luck next time. You lost the game.";
+          "Congratulations! Your monsters have the skills that pay the bills. You win!"
+        : "Your monsters' skills did not pay the bills. You lose!";
       setResultMsg(msg);
     }
     setAcknowledged(false);
@@ -56,6 +59,8 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
   let playerNbr: 1 | 2;
   let playerMonsters: "playerOneMonsters" | "playerTwoMonsters";
   let chosenMonster, score, opponentScore;
+
+  console.log(gameState);
 
   if (user.id === gameState.playerOneId) {
     playerNbr = 1;
@@ -76,7 +81,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
 
   const playerCards = gameState[playerMonsters];
 
-  const cardChosenHandler: React.MouseEventHandler<HTMLDivElement> = async (
+  const cardChosenHandler: React.MouseEventHandler<HTMLButtonElement> = async (
     event,
   ) => {
     event.preventDefault();
@@ -86,7 +91,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
       return;
     }
 
-    const cardElement = event.target as HTMLDivElement;
+    const cardElement = event.target as HTMLButtonElement;
     const cardId = cardElement.dataset["cardId"] ?? "";
     cardElement.attributeStyleMap.set("display", "none");
     await updateMonsterChoice({
@@ -128,7 +133,6 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
       >
         Back To Game List
       </Button>
-
       <hr className="m-10" />
       <ContractCard
         contract={gameState.currentContract}
@@ -136,7 +140,6 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
         playerOneMonster={gameState.currentPlayerOneMonster}
         playerTwoMonster={gameState.currentPlayerTwoMonster}
       />
-
       <hr className="m-10" />
       <div>
         {resultMsg && (
@@ -157,25 +160,12 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
           </>
         )}
       </div>
-
       <hr className="m-10" />
-      <div>
-        <h1>Your Monster Talent Pool</h1>
-
-        <div className="flex flex-wrap content-center justify-center gap-1">
-          {playerCards &&
-            playerCards.map((card) => (
-              <div
-                key={card.id}
-                onClick={cardChosenHandler}
-                className="my-2 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-solid border-black bg-gradient-to-b from-purple-50 to-purple-300 p-2 text-center"
-                data-card-id={card.id}
-              >
-                {card.monsterType}
-              </div>
-            ))}
-        </div>
-      </div>
+      <PlayerHand
+        allowSelection={!Boolean(chosenMonster)}
+        cards={playerCards}
+        onCardSelected={cardChosenHandler}
+      />
       <hr />
       <div>
         <p>Your score: {score}</p>

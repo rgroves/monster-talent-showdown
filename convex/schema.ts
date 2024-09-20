@@ -11,6 +11,8 @@ const contractCardValidator = v.object({
 const monsterCardValidator = v.object({
   id: v.string(),
   monsterType: v.string(),
+  primaryAbility: v.string(),
+  secondaryAbility: v.string(),
   timeAdvantage: v.string(),
 });
 

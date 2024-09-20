@@ -93,7 +93,9 @@ export default function App() {
             <GameList games={games} onActivateGame={activateGameHandler} />
           )}
 
-          <GameBoard gameState={gameState} onExit={exitGameHandler} />
+          {gameState && (
+            <GameBoard gameState={gameState} onExit={exitGameHandler} />
+          )}
         </main>
       </Authenticated>
       <Unauthenticated>

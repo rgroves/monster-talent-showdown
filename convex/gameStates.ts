@@ -9,8 +9,9 @@ export const getByGameId = query({
   handler: async (ctx, { gameId }) => {
     const identity = await ctx.auth.getUserIdentity();
     if (identity === null) {
-      console.error("Failed to retrieve game: Unauthenticated");
-      return null;
+      const msg = "Failed to retrieve game: Unauthenticated";
+      console.error(msg);
+      throw new Error(msg);
     }
 
     const state = await ctx.db
@@ -18,6 +19,10 @@ export const getByGameId = query({
       .withIndex("byGameId")
       .filter((q) => q.eq(q.field("gameId"), gameId))
       .unique();
+
+    if (state === null) {
+      throw new Error("Invalid Game ID");
+    }
 
     return state;
   },
