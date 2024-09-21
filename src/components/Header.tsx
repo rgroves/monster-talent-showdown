@@ -3,7 +3,7 @@ import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
 import { Button } from "./ui/button";
 import Logo from "./Logo";
 
-export default function Header({}) {
+export default function Header() {
   return (
     <header className="flex items-center justify-between md:sticky md:top-0">
       <Logo />

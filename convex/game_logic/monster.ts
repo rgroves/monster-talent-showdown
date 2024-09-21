@@ -1,12 +1,6 @@
 import { Doc } from "../_generated/dataModel";
 import { shuffle } from "./utility";
 
-enum TimeAdvantage {
-  Day = "DAY",
-  Night = "NIGHT",
-  Any = "ANY",
-}
-
 export type MonsterDeck = Doc<"gameState">["monsterDeck"];
 
 const baseMonsterDeck: MonsterDeck = [
