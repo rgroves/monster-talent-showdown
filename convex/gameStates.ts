@@ -130,19 +130,21 @@ export const acknowledgeRound = mutation({
             gameState.playerOneId
           : gameState.playerTwoId;
 
-        await ctx.db.patch(gameState.gameId, { status: "COMPLETED" });
+        if (gameState.endTime) {
+          // Both players have acknowledge the end of game, so it is now completed.
+          await ctx.db.patch(gameState.gameId, { status: "COMPLETED" });
+        } else {
+          patchState = {
+            endTime: new Date().toISOString(),
+            currentPlayerOneMonster: undefined,
+            currentPlayerTwoMonster: undefined,
+            winningPlayerId,
+            playerOneRoundAck: false,
+            playerTwoRoundAck: false,
+          };
 
-        patchState = {
-          endTime: new Date().toISOString(),
-          // currentContract: undefined,
-          currentPlayerOneMonster: undefined,
-          currentPlayerTwoMonster: undefined,
-          winningPlayerId,
-          playerOneRoundAck: false,
-          playerTwoRoundAck: false,
-        };
-
-        await ctx.db.patch(gameState._id, patchState);
+          await ctx.db.patch(gameState._id, patchState);
+        }
       } else {
         // Set up next round
 

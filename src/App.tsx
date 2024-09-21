@@ -1,5 +1,5 @@
 import { api } from "../convex/_generated/api";
-import { Doc, Id } from "../convex/_generated/dataModel";
+import { Doc } from "../convex/_generated/dataModel";
 import {
   Authenticated,
   useQuery,
@@ -15,85 +15,65 @@ import JoinGameDialog from "./components/JoinGameDiaglog";
 import WaitingForJoinControl from "./components/WaitingForJoinControl";
 import "./App.css";
 
-type GameData = {
-  currentJoinCode: Doc<"games">["joinCode"] | null;
-  currentGameId: Id<"games"> | null;
-};
-
 export default function App() {
+  const [selectedGame, setSelectedGame] = useState<Doc<"games"> | null>(null);
   const { isAuthenticated, isLoading } = useConvexAuth();
+
   const games = useQuery(
     api.games.get,
     !isAuthenticated || isLoading ? "skip" : undefined,
   );
-  const [gameData, setGameData] = useState<GameData>({
-    currentGameId: null,
-    currentJoinCode: null,
-  });
+
+  // The selectedGame value is not sourced from a reactive query so its state may be old.
+  // The currentGame value pulls the selected game (by id) from the reactive games list
+  // so that the most recent state of the game object can be used.
+  const currentGame =
+    selectedGame ? games?.find((game) => game._id === selectedGame._id) : null;
+
   const gameState = useQuery(
     api.gameStates.getByGameId,
-    gameData.currentGameId ? { gameId: gameData.currentGameId } : "skip",
+    currentGame && currentGame.status === "INPROGRESS" ?
+      { gameId: currentGame._id }
+    : "skip",
   );
 
-  const exitGameHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    setGameData({ currentGameId: null, currentJoinCode: null });
+  const exitGameHandler = () => {
+    setSelectedGame(null);
   };
 
-  const createGameHandler = (gameId: Id<"games">, joinCode: string) => {
-    setGameData({
-      currentGameId: gameId,
-      currentJoinCode: joinCode,
-    });
+  const createGameHandler = (game: Doc<"games">) => {
+    setSelectedGame(game);
   };
 
-  const activateGameHandler = (gameId: Id<"games">) => {
-    setGameData((prev) => ({ ...prev, currentGameId: gameId }));
+  const activateGameHandler = (game: Doc<"games">) => {
+    setSelectedGame(game);
   };
 
   const stopWaitingHandler = () => {
-    setGameData({ currentGameId: null, currentJoinCode: null });
+    setSelectedGame(null);
   };
-
-  const currentGame = games?.filter(
-    (game) => game.joinCode === gameData.currentJoinCode,
-  )[0];
-
-  const shouldRenderCreateGameControl = gameData.currentGameId == null;
-  const shouldRenderJoinGameDialog =
-    gameData.currentGameId == null && gameData.currentJoinCode == null;
-  const shouldRenderGamesList = gameData.currentGameId === null;
-  const shouldRenderWaitingForJoinControl = currentGame?.status === "JOINING";
 
   return (
     <>
       <Header />
       <Authenticated>
         <main>
-          {shouldRenderCreateGameControl && (
-            <CreateGameControl
-              joinCode={gameData.currentJoinCode}
-              onCreate={createGameHandler}
-            />
-          )}
+          {!currentGame && <CreateGameControl onCreate={createGameHandler} />}
 
-          {shouldRenderWaitingForJoinControl && gameData.currentJoinCode && (
+          {currentGame && currentGame.status === "JOINING" && (
             <WaitingForJoinControl
-              joinCode={gameData.currentJoinCode}
+              joinCode={currentGame.joinCode}
               onStopWaiting={stopWaitingHandler}
             />
           )}
 
-          {shouldRenderJoinGameDialog && (
-            <JoinGameDialog onJoin={activateGameHandler} />
-          )}
+          {!currentGame && <JoinGameDialog onJoin={activateGameHandler} />}
 
-          {shouldRenderGamesList && (
+          {!currentGame && (
             <GameList games={games} onActivateGame={activateGameHandler} />
           )}
 
-          {gameState && (
+          {currentGame && gameState && (
             <GameBoard gameState={gameState} onExit={exitGameHandler} />
           )}
         </main>

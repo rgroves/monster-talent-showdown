@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { Doc, Id } from "../../convex/_generated/dataModel";
+import { Doc } from "../../convex/_generated/dataModel";
 import GameCard from "./GameCard";
 
 interface IGameListProps {
   games: Doc<"games">[] | undefined;
-  onActivateGame: (gameId: Id<"games">) => void;
+  onActivateGame: (game: Doc<"games">) => void;
 }
 
 type GameStatusMapKey = Doc<"games">["status"];

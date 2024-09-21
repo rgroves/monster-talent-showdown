@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Id } from "@/../convex/_generated/dataModel";
+import { Doc } from "@/../convex/_generated/dataModel";
 import JoinGameForm from "@/components/JoinGameForm";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 
 interface IJoinGameDialogProps {
-  onJoin: (gameId: Id<"games">) => void;
+  onJoin: (game: Doc<"games">) => void;
 }
 export default function JoinGameDialog({ onJoin }: IJoinGameDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,9 @@ export default function JoinGameDialog({ onJoin }: IJoinGameDialogProps) {
       }}
     >
       <DialogTrigger asChild>
-        <Button className="m-4">{title}</Button>
+        <Button type="button" className="m-4">
+          {title}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

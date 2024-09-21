@@ -41,7 +41,9 @@ export default function WaitingForJoinControl({
       }}
     >
       <DialogTrigger asChild>
-        <Button className="m-4">Back to Games List</Button>
+        <Button type="button" className="m-4">
+          Back to Games List
+        </Button>
       </DialogTrigger>
       <DialogContent className="mx-auto my-8 max-w-[425px]">
         <DialogHeader>

@@ -60,8 +60,6 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
   let playerMonsters: "playerOneMonsters" | "playerTwoMonsters";
   let chosenMonster, score, opponentScore;
 
-  console.log(gameState);
-
   if (user.id === gameState.playerOneId) {
     playerNbr = 1;
     playerMonsters = "playerOneMonsters";
@@ -104,9 +102,13 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
     return (
       <div className="game-board">
         <Button
-          onClick={(event) => {
-            event.preventDefault();
-            event.stopPropagation();
+          type="button"
+          onClick={async (event) => {
+            setAcknowledged(true);
+            await acknowledgeRound({
+              gameStateId: gameState._id,
+              playerId,
+            });
             if (onExit) {
               onExit(event);
             }
@@ -123,9 +125,8 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
   return (
     <div className="game-board">
       <Button
+        type="button"
         onClick={(event) => {
-          event.preventDefault();
-          event.stopPropagation();
           if (onExit) {
             onExit(event);
           }
@@ -146,6 +147,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
           <>
             <h3>{resultMsg}</h3>
             <Button
+              type="button"
               disabled={acknowledged}
               onClick={async () => {
                 setAcknowledged(true);
@@ -162,7 +164,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
       </div>
       <hr className="m-10" />
       <PlayerHand
-        allowSelection={!Boolean(chosenMonster)}
+        allowSelection={!chosenMonster}
         cards={playerCards}
         onCardSelected={cardChosenHandler}
       />

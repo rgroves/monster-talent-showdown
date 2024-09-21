@@ -123,6 +123,8 @@ export const join = mutation({
       status: GameState.INPROGRESS,
     });
 
-    return { gameId: game._id, status: "Successfully joined the game" };
+    const updatedGame = await ctx.db.get(game._id);
+
+    return { game: updatedGame, status: "Successfully joined the game" };
   },
 });

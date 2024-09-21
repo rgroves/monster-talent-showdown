@@ -36,6 +36,7 @@ export default function PlayerHand({
               <p>{card.timeAdvantage}</p>
 
               <Button
+                type="button"
                 data-card-id={card.id}
                 disabled={!allowSelection}
                 onClick={onCardSelected}

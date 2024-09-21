@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { api } from "@/../convex/_generated/api";
-import { Id } from "@/../convex/_generated/dataModel";
+import { Doc } from "@/../convex/_generated/dataModel";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,7 +24,7 @@ const formSchema = z.object({
 });
 
 interface IJoinGameFormProps {
-  onJoin: (gameId: Id<"games">) => void;
+  onJoin: (game: Doc<"games">) => void;
   onFormSubmit: (isValidSubmission: boolean) => void;
 }
 
@@ -43,8 +43,8 @@ export default function JoinGameForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const joinData = await joinGame(values);
-    if (joinData?.gameId) {
-      onJoin(joinData.gameId);
+    if (joinData?.game) {
+      onJoin(joinData.game);
       onFormSubmit(true);
     } else {
       setErrorMsg(joinData?.status ?? "Failed to join");

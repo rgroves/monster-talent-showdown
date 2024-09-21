@@ -1,4 +1,4 @@
-import { Doc, Id } from "convex/_generated/dataModel";
+import { Doc } from "convex/_generated/dataModel";
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 
 interface IGameCardProps {
   game: Doc<"games">;
-  onActivateGame?: (gameId: Id<"games">) => void;
+  onActivateGame?: (game: Doc<"games">) => void;
 }
 
 export default function GameCard({ game, onActivateGame }: IGameCardProps) {
@@ -29,10 +29,11 @@ export default function GameCard({ game, onActivateGame }: IGameCardProps) {
       <CardContent className="text-balance">
         {game.status === "INPROGRESS" ?
           <Button
+            type="button"
             className="p-6"
             onClick={() => {
               if (onActivateGame) {
-                onActivateGame(game._id);
+                onActivateGame(game);
               }
             }}
           >

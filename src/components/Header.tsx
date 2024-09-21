@@ -11,7 +11,7 @@ export default function Header({}) {
       <AuthLoading>Loading...</AuthLoading>
       <Unauthenticated>
         <SignInButton mode="modal">
-          <Button>Sign In</Button>
+          <Button type="button">Sign In</Button>
         </SignInButton>
       </Unauthenticated>
       <Authenticated>
