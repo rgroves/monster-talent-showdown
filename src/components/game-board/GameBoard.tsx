@@ -147,7 +147,9 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
         {resultMsg && (
           <>
             <hr className="m-5" />
-            <h3>{resultMsg}</h3>
+            <h3 className="mx-auto max-w-prose text-balance text-xl sm:text-2xl">
+              {resultMsg}
+            </h3>
             <Button
               type="button"
               disabled={acknowledged}
