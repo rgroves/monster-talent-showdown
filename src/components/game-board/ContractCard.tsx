@@ -42,16 +42,16 @@ export default function ContractCard({
       </CardHeader>
       <CardContent className="text-balanced text-left">
         <div>{contract.description}</div>
-        <div className="my-4 grid grid-cols-1 justify-items-center md:grid-cols-2">
+        <div className="my-4 grid grid-cols-1 justify-items-center sm:grid-cols-2">
           <div
-            className={`${playerOneCardBackground} my-2 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-dashed border-black p-2 text-center`}
+            className={`${playerOneCardBackground} my-1 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-dashed border-black p-2 text-center`}
           >
             {playerOneMonster ?
               playerOneMonster.monsterType
             : playerOneChooseMsg}
           </div>
           <div
-            className={`${playerTwoCardBackground} my-2 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-dashed border-black p-2 text-center`}
+            className={`${playerTwoCardBackground} my-1 flex max-h-[150px] min-h-[150px] min-w-[150px] max-w-[150px] items-center justify-center text-balance border border-dashed border-black p-2 text-center`}
           >
             {playerTwoMonster ?
               playerTwoMonster.monsterType

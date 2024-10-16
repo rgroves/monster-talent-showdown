@@ -29,12 +29,12 @@ export default function GameList({ games, onActivateGame }: IGameListProps) {
 
   return (
     <>
-      <h1 className="m-2 my-8 text-balance text-base font-black md:text-xl lg:text-3xl">
+      <h1 className="m-2 my-8 text-balance text-base font-black sm:text-xl lg:text-3xl">
         Your Game List
       </h1>
 
       <hr className="my-8" />
-      <h2 className="m-2 my-8 text-balance text-sm font-extrabold md:text-lg lg:text-2xl">
+      <h2 className="m-2 my-8 text-balance text-sm font-extrabold sm:text-lg lg:text-2xl">
         Games In Progress
       </h2>
       {inProgressGames.length > 0 ?
@@ -52,7 +52,7 @@ export default function GameList({ games, onActivateGame }: IGameListProps) {
       }
 
       <hr className="my-8" />
-      <h2 className="m-2 my-8 text-balance text-sm font-extrabold md:text-lg lg:text-2xl">
+      <h2 className="m-2 my-8 text-balance text-sm font-extrabold sm:text-lg lg:text-2xl">
         Games Waiting For A Competitor
       </h2>
       {joiningGames.length > 0 ?
@@ -60,7 +60,7 @@ export default function GameList({ games, onActivateGame }: IGameListProps) {
       : <p>You have no games waiting for a competitor to join.</p>}
 
       <hr className="my-8" />
-      <h2 className="m-2 my-8 text-balance text-sm font-extrabold md:text-lg lg:text-2xl">
+      <h2 className="m-2 my-8 text-balance text-sm font-extrabold sm:text-lg lg:text-2xl">
         Completed Games
       </h2>
       {completedGames.length > 0 ?

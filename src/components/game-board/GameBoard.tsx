@@ -45,8 +45,8 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
       // There is a winner and this is the end of the game.
       const msg =
         gameState.winningPlayerId === playerId ?
-          "Congratulations! Your monsters have the skills that pay the bills. You win!"
-        : "Your monsters' skills did not pay the bills. You lose!";
+          "Congratulations, you win! Your monsters have the skills that pay the bills."
+        : "You lose! Your monsters' skills did not pay the bills.";
       setResultMsg(msg);
     }
     setAcknowledged(false);
@@ -91,7 +91,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
 
     const cardElement = event.target as HTMLButtonElement;
     const cardId = cardElement.dataset["cardId"] ?? "";
-    cardElement.attributeStyleMap.set("display", "none");
+    cardElement.parentElement?.attributeStyleMap.set("display", "none");
     await updateMonsterChoice({
       gameStateId: gameState._id,
       update: { playerId, cardId },
@@ -116,8 +116,10 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
         >
           Back To Game List
         </Button>
-        <hr />
-        <h1>{resultMsg}</h1>
+        <hr className="m-5" />
+        <h1 className="mx-auto max-w-prose text-balance text-xl sm:text-2xl">
+          {resultMsg}
+        </h1>
       </div>
     );
   }
@@ -134,17 +136,17 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
       >
         Back To Game List
       </Button>
-      <hr className="m-10" />
+      <hr className="m-5" />
       <ContractCard
         contract={gameState.currentContract}
         playerNbr={playerNbr}
         playerOneMonster={gameState.currentPlayerOneMonster}
         playerTwoMonster={gameState.currentPlayerTwoMonster}
       />
-      <hr className="m-10" />
       <div>
         {resultMsg && (
           <>
+            <hr className="m-5" />
             <h3>{resultMsg}</h3>
             <Button
               type="button"
@@ -162,7 +164,7 @@ export default function GameBoard({ gameState, onExit }: IGameBoardProps) {
           </>
         )}
       </div>
-      <hr className="m-10" />
+      <hr className="m-5" />
       <PlayerHand
         allowSelection={!chosenMonster}
         cards={playerCards}

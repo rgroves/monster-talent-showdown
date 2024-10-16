@@ -5,7 +5,7 @@ import Logo from "./Logo";
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-between md:sticky md:top-0">
+    <header className="flex items-center justify-between">
       <Logo />
       <p className="sr-only">Monster Talent Showdown</p>
       <AuthLoading>Loading...</AuthLoading>
