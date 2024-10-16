@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { Doc } from "./_generated/dataModel";
 
-const POINTS_TO_WIN_GAME = 10;
+const POINTS_TO_WIN_GAME = 3;
 
 export const getByGameId = query({
   args: { gameId: v.string() },
